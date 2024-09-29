@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>Entity Framework Core is a modern object-database mapper for .NET. It supports LINQ queries, change tracking, updates, and schema migrations. EF Core works with SQL Server, Azure SQL Database, SQLite, Azure Cosmos DB, MySQL, PostgreSQL, and other databases through a provider plugin API.
+    <Description>Entity Framework Core is a modern object-database mapper for .NET. It supports LINQ queries, change tracking, updates, and schema migrations. EF Core works with SQL Server, Azure SQL Database, SQLite, Azure Cosmos DB, MySQL, PostgreSQL, and other databases through a provider plugin API. Now includes support for Azure Data Explorer (Kusto/KQL).
 
 Commonly Used Types:
 Microsoft.EntityFrameworkCore.DbContext
@@ -53,6 +53,7 @@ Microsoft.EntityFrameworkCore.DbSet
   <ItemGroup>
     <ProjectReference Include="..\EFCore.Abstractions\EFCore.Abstractions.csproj" />
     <ProjectReference Include="..\EFCore.Analyzers\EFCore.Analyzers.csproj" ReferenceOutputAssembly="False" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\EFCore.Kusto\EFCore.Kusto.csproj" />
   </ItemGroup>
 
   <ItemGroup>
