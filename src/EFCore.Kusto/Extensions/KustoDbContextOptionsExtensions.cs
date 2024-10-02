@@ -17,16 +17,7 @@ namespace Microsoft.EntityFrameworkCore
         public static DbContextOptionsBuilder UseKusto(
             this DbContextOptionsBuilder optionsBuilder,
             Action<KustoDbContextOptionsBuilder> kustoOptionsAction)
-        {
-            Check.NotNull(optionsBuilder, nameof(optionsBuilder));
-            Check.NotNull(kustoOptionsAction, nameof(kustoOptionsAction));
-
-            ConfigureWarnings(optionsBuilder);
-
-            kustoOptionsAction.Invoke(new KustoDbContextOptionsBuilder(optionsBuilder));
-
-            return optionsBuilder;
-        }
+            => UseKustoCore(optionsBuilder, kustoOptionsAction);
 
         public static DbContextOptionsBuilder<TContext> UseKusto<TContext>(
             this DbContextOptionsBuilder<TContext> optionsBuilder,
@@ -55,7 +46,6 @@ namespace Microsoft.EntityFrameworkCore
             string authority,
             Action<KustoDbContextOptionsBuilder>? kustoOptionsAction = null)
         {
-            Check.NotNull(optionsBuilder, nameof(optionsBuilder));
             Check.NotNull(clusterEndpoint, nameof(clusterEndpoint));
             Check.NotNull(databaseName, nameof(databaseName));
             Check.NotNull(applicationClientId, nameof(applicationClientId));
@@ -72,13 +62,9 @@ namespace Microsoft.EntityFrameworkCore
                 .WithApplicationClientSecret(applicationClientSecret)
                 .WithAuthority(authority);
 
-            ConfigureWarnings(optionsBuilder);
-
             ((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(extension);
 
-            kustoOptionsAction?.Invoke(new KustoDbContextOptionsBuilder(optionsBuilder));
-
-            return optionsBuilder;
+            return UseKustoCore(optionsBuilder, kustoOptionsAction);
         }
 
         public static DbContextOptionsBuilder<TContext> UseKusto<TContext>(
@@ -102,7 +88,6 @@ namespace Microsoft.EntityFrameworkCore
             string databaseName,
             Action<KustoDbContextOptionsBuilder>? kustoOptionsAction = null)
         {
-            Check.NotNull(optionsBuilder, nameof(optionsBuilder));
             Check.NotNull(clusterEndpoint, nameof(clusterEndpoint));
             Check.NotNull(tokenCredential, nameof(tokenCredential));
             Check.NotNull(databaseName, nameof(databaseName));
@@ -115,13 +100,9 @@ namespace Microsoft.EntityFrameworkCore
                 .WithTokenCredential(tokenCredential)
                 .WithDatabaseName(databaseName);
 
-            ConfigureWarnings(optionsBuilder);
-
             ((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(extension);
 
-            kustoOptionsAction?.Invoke(new KustoDbContextOptionsBuilder(optionsBuilder));
-
-            return optionsBuilder;
+            return UseKustoCore(optionsBuilder, kustoOptionsAction);
         }
 
         public static DbContextOptionsBuilder<TContext> UseKusto<TContext>(
@@ -142,7 +123,6 @@ namespace Microsoft.EntityFrameworkCore
             string databaseName,
             Action<KustoDbContextOptionsBuilder>? kustoOptionsAction = null)
         {
-            Check.NotNull(optionsBuilder, nameof(optionsBuilder));
             Check.NotNull(connectionString, nameof(connectionString));
             Check.NotNull(databaseName, nameof(databaseName));
 
@@ -153,12 +133,18 @@ namespace Microsoft.EntityFrameworkCore
                 .WithConnectionString(connectionString)
                 .WithDatabaseName(databaseName);
 
-            ConfigureWarnings(optionsBuilder);
-
             ((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(extension);
 
-            kustoOptionsAction?.Invoke(new KustoDbContextOptionsBuilder(optionsBuilder));
+            return UseKustoCore(optionsBuilder, kustoOptionsAction);
+        }
 
+        private static DbContextOptionsBuilder UseKustoCore(
+            DbContextOptionsBuilder optionsBuilder,
+            Action<KustoDbContextOptionsBuilder>? kustoOptionsAction)
+        {
+            Check.NotNull(optionsBuilder, nameof(optionsBuilder));
+            ConfigureWarnings(optionsBuilder);
+            kustoOptionsAction?.Invoke(new KustoDbContextOptionsBuilder(optionsBuilder));
             return optionsBuilder;
         }
 
